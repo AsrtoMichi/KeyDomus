@@ -14,7 +14,7 @@
     "commons": {
       "all": "All",
       "filters": "Filters",
-      "note": "Note"
+      "note": "Notes"
     },
     "buttons": {
       "new": "New",
@@ -25,15 +25,31 @@
     },
     "buildings": {
       "title": "Buildings",
-      "find_building": "Find Building ...",
+      "find_building": "Find by Building ...",
       "find_address": "Address ...",
       "list_building": "List Buildings:",
       "name_building": "Name Building",
-      "parent_building": "Parent Building:",
+	  "relations": "Relations: connected doors",
+	  "realtions_headers" : "Doors",
+      "parent_building": "Parent Building",
       "address": "Address"
     },
     "doors": {
-		"title": "Doors"
+		"title": "Doors",
+		"find_door": "Find Door ...",
+		"find_building": "Find by Building ...",
+		"find_keysistem": "Find by Key Sistem ...",
+		"list_door": "List Doors:",
+		"relations" : "Relations: Connected Keys",
+		"relations_folders" : ["Key Id", "Key Sistem", "Owner"],
+		
+		"name_door": "Name Door",
+		"parent_building": "Bulding",
+		"floor": "Floor",
+		"nroom": "N. Room",
+		"room": "Room",
+		"sistem": "Key Sistem",
+		"map": "Map"
 	},
 	"sistems": {
 		"title": "Sistems"

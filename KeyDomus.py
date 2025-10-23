@@ -1,8 +1,10 @@
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QTextEdit, QTableWidget, QTableWidgetItem, QComboBox,
-    QListWidget, QListWidgetItem, QTabWidget, QSizePolicy
+    QListWidget, QListWidgetItem, QTabWidget, QSizePolicy, QFrame
 )
+from PyQt6.QtCore import QStringListModel
+
 import sys
 import json
 
@@ -48,8 +50,7 @@ i18n.set_language("en")
 t = i18n.t
 
 
-
-class BuildingForm(QWidget):
+class BuildingsForm(QWidget):
     def __init__(self):
         super().__init__()
         self.mode = "idle"
@@ -73,7 +74,6 @@ class BuildingForm(QWidget):
 
         for btn in [self.new_button, self.edit_button, self.save_button, self.cancel_button, self.delete_button]:
             btn.setFixedHeight(30)
-            btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             self.button_row.addWidget(btn)
 
         layout.addLayout(self.button_row)
@@ -83,9 +83,8 @@ class BuildingForm(QWidget):
         self.name_input.setPlaceholderText(t("buildings.name_building"))
         layout.addWidget(self.name_input)
        
-        layout.addWidget(QLabel(t("buildings.parent_building")))
         self.parent_input = QComboBox()
-        self.parent_input.addItem(t("commons.all"))
+        self.parent_input.setPlaceholderText(t("buildings.parent_building"))
         layout.addWidget(self.parent_input)
         
         self.address_input = QLineEdit()
@@ -183,14 +182,16 @@ class BuildingsTab(QWidget):
         left_panel = QVBoxLayout()
         
         left_panel.addWidget(QLabel(t("commons.filters")))
-        self.search_input = QLineEdit(t("buildings.find_building"))
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText(t("buildings.find_building"))
         left_panel.addWidget(self.search_input)
         
         self.parent_filter = QComboBox()
         self.parent_filter.addItem(t("commons.all"))
         left_panel.addWidget(self.parent_filter)
         
-        self.address_filter = QLineEdit(t("buildings.find_address"))
+        self.address_filter = QLineEdit()
+        self.address_filter.setPlaceholderText(t("buildings.find_address"))
         left_panel.addWidget(self.address_filter)
         
         left_panel.addWidget(QLabel(t("buildings.list_building")))
@@ -203,7 +204,7 @@ class BuildingsTab(QWidget):
         left_panel.addWidget(self.building_list)
 
         # Form edificio
-        self.form = BuildingForm()
+        self.form = BuildingsForm()
         self.form.setParent(self)
 
         top_layout.addLayout(left_panel)
@@ -211,10 +212,10 @@ class BuildingsTab(QWidget):
         layout.addLayout(top_layout)
 
         # Tabella relazioni
-        layout.addWidget(QLabel("Relazioni: Porte associate"))
+        layout.addWidget(QLabel(t("buildings.relations")))
         self.relations_table = QTableWidget()
-        self.relations_table.setColumnCount(4)
-        self.relations_table.setHorizontalHeaderLabels(["Porta", "Posizione", "Sistema", "Azioni"])
+        self.relations_table.setColumnCount(1)
+        self.relations_table.setHorizontalHeaderLabels([t("buildings.realtions_headers")])
         layout.addWidget(self.relations_table)
 
     def on_item_selected(self, item: QListWidgetItem):
@@ -231,40 +232,73 @@ class DoorForm(QWidget):
 
         # 🔘 Pulsanti (sopra)
         self.button_row = QHBoxLayout()
-        self.new_button = QPushButton("Nuovo")
-        self.edit_button = QPushButton("Modifica")
-        self.save_button = QPushButton("Salva")
-        self.cancel_button = QPushButton("Annulla")
-        self.delete_button = QPushButton("Elimina")
+        self.new_button = QPushButton(t("buttons.new"))
+        self.new_button.clicked.connect(self.on_new)
+        self.edit_button = QPushButton(t("buttons.edit"))
+        self.edit_button.clicked.connect(self.on_edit)
+        self.save_button = QPushButton(t("buttons.save"))
+        self.save_button.clicked.connect(self.on_save)
+        self.cancel_button = QPushButton(t("buttons.cancel"))
+        self.cancel_button.clicked.connect(self.on_cancel)
+        self.delete_button = QPushButton(t("buttons.delete"))
+        self.delete_button.clicked.connect(self.on_delete)
 
         for btn in [self.new_button, self.edit_button, self.save_button, self.cancel_button, self.delete_button]:
             btn.setFixedHeight(30)
-            btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             self.button_row.addWidget(btn)
 
         layout.addLayout(self.button_row)
 
         # 🧾 Form campi (sotto)
         self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText("Nome porta")
+        self.name_input.setPlaceholderText(t("doors.name_door"))
+        layout.addWidget(self.name_input)
+        
+        
         self.building_input = QComboBox()
-        self.building_input.addItem("Nessuno")
+        self.building_input.setPlaceholderText(t("doors.parent_building"))
+        layout.addWidget(self.building_input)
+        
+        pos_layout = QVBoxLayout()
+        layout.addLayout(pos_layout)
+        
+        flor_map = QHBoxLayout()
+        pos_layout.addLayout(flor_map)
 
+        self.floor = QLineEdit()
+        self.floor.setPlaceholderText(t("doors.floor"))
+        flor_map.addWidget(self.floor)
+        
+        
+        self.map_button = QPushButton("Map")
+        flor_map.addWidget(self.map_button)
+
+        
+        nroom_room = QHBoxLayout()
+        pos_layout.addLayout(nroom_room)
+        
+        self.nroom = QLineEdit()
+        self.nroom.setPlaceholderText(t("doors.nroom"))
+        nroom_room.addWidget(self.nroom)
+        
+        self.room = QLineEdit()
+        self.room.setPlaceholderText(t("doors.room"))
+        nroom_room.addWidget(self.room)
+        
+
+        line = QFrame()
+        line.setFrameShape(QFrame.Shape.HLine)
+        line.setFrameShadow(QFrame.Shadow.Sunken)
+        layout.addWidget(line)
+
+        self.sistem_input = QComboBox()
+        self.sistem_input.setPlaceholderText(t("doors.sistem"))
+        layout.addWidget(self.sistem_input)
 
         self.notes_input = QTextEdit()
-        self.notes_input.setPlaceholderText("Note")
-
-        layout.addWidget(self.name_input)
-        layout.addWidget(self.building_input)
-        #layout.addWidget(self.address_input)
+        self.notes_input.setPlaceholderText(t("commons.note"))
         layout.addWidget(self.notes_input)
 
-        # 🔗 Connessioni
-        self.new_button.clicked.connect(self.on_new)
-        self.edit_button.clicked.connect(self.on_edit)
-        self.save_button.clicked.connect(self.on_save)
-        self.cancel_button.clicked.connect(self.on_cancel)
-        self.delete_button.clicked.connect(self.on_delete)
 
         self.update_form_state()
         self.update_buttons()
@@ -273,7 +307,10 @@ class DoorForm(QWidget):
         editable = self.mode in ["new", "edit"]
         self.name_input.setEnabled(editable)
         self.building_input.setEnabled(editable)
-        #self.address_input.setEnabled(editable)
+        self.floor.setEnabled(editable)
+        self.map_button.setEnabled(editable)
+        self.nroom.setEnabled(editable)
+        self.room.setEnabled(editable)
         self.notes_input.setEnabled(editable)
 
     def update_buttons(self):
@@ -285,9 +322,6 @@ class DoorForm(QWidget):
 
     def load_item(self, item: QListWidgetItem):
         self.selected_item = item
-        self.name_input.setText(item.text())
-        #self.address_input.setText("Indirizzo esempio")
-        self.notes_input.setText("Note esempio")
         self.mode = "idle"
         self.update_form_state()
         self.update_buttons()
@@ -296,7 +330,10 @@ class DoorForm(QWidget):
         self.mode = "new"
         self.selected_item = None
         self.name_input.clear()
-        #self.address_input.clear()
+        self.building_input.clear()
+        self.floor.clear()
+        self.nroom.clear()
+        self.room.clear()
         self.notes_input.clear()
         self.update_form_state()
         self.update_buttons()
@@ -304,6 +341,7 @@ class DoorForm(QWidget):
     def on_edit(self):
         if self.selected_item:
             self.mode = "edit"
+            #load data
             self.update_form_state()
             self.update_buttons()
 
@@ -330,7 +368,7 @@ class DoorForm(QWidget):
 
     def on_delete(self):
         if self.selected_item:
-            row = self.parent().building_list.row(self.selected_item)
+            row = self.parent().door_list.row(self.selected_item)
             self.parent().door_list.takeItem(row)
             self.selected_item = None
             self.name_input.clear()
@@ -350,23 +388,31 @@ class DoorsTab(QWidget):
 
         # Lista + filtri
         left_panel = QVBoxLayout()
-        self.search_input = QLineEdit("Cerca porta...")
+        
+        left_panel.addWidget(QLabel(t("commons.filters")))
+        
+        self.search_input = QLineEdit()
+        self.search_input.setPlaceholderText(t("doors.find_door"))
+        left_panel.addWidget(self.search_input)
+        
         self.building_filter = QComboBox()
-        self.building_filter.addItem("Tutti")
+        self.building_filter.setPlaceholderText(t("doors.find_building"))
+        left_panel.addWidget(self.building_filter)
+        
         self.sistem_filter = QComboBox()
-        self.sistem_filter.addItem("Tutti")
+        self.sistem_filter.setPlaceholderText(t("doors.find_keysistem"))
+        left_panel.addWidget(self.sistem_filter)
+                
         self.door_list = QListWidget()
         self.door_list.itemClicked.connect(self.on_item_selected)
+        left_panel.addWidget(self.door_list)
 
         for name in ["Edificio A", "Edificio B", "Edificio C"]:
             self.door_list.addItem(name)
 
-        left_panel.addWidget(QLabel("Filtri"))
-        left_panel.addWidget(self.search_input)
-        left_panel.addWidget(self.building_filter)
-        left_panel.addWidget(self.sistem_filter)
-        left_panel.addWidget(QLabel("Lista porte"))
-        left_panel.addWidget(self.door_list)
+
+        left_panel.addWidget(QLabel(t("doors.list_door")))
+        
 
         # Form edificio
         self.form = DoorForm()
@@ -377,10 +423,10 @@ class DoorsTab(QWidget):
         layout.addLayout(top_layout)
 
         # Tabella relazioni
-        layout.addWidget(QLabel("Relazioni: Porte associate"))
+        layout.addWidget(QLabel(t("doors.relations")))
         self.relations_table = QTableWidget()
-        self.relations_table.setColumnCount(4)
-        self.relations_table.setHorizontalHeaderLabels(["Chiave", "Sistema", "Utente"])
+        self.relations_table.setColumnCount(3)
+        self.relations_table.setHorizontalHeaderLabels(list(t("doors.relations_folders")))
         layout.addWidget(self.relations_table)
 
     def on_item_selected(self, item: QListWidgetItem):
@@ -462,4 +508,4 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
