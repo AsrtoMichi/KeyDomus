@@ -1,0 +1,37 @@
+{
+  "it": {
+    "buttons": {
+      "new": "Nuovo",
+      "edit": "Modifica",
+      "save": "Salva",
+      "cancel": "Annulla",
+      "delete": "Elimina"
+    },
+    "building": "Edificio",
+    "search": "Cerca"
+  },
+  "en": {
+    "commons": {
+      "all": "All",
+      "filters": "Filters",
+      "note": "Note"
+    },
+    "buttons": {
+      "new": "New",
+      "edit": "Edit",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete"
+    },
+    "building": {
+      "title": "Building",
+      "find_building": "Find Building ...",
+      "find_address": "Address ...",
+      "list_building": "List Buildings:",
+      "name_building": "Name Building",
+      "parent_building": "Parent Building:",
+      "address": "Address"
+    },
+    "search": "Search"
+  }
+}
