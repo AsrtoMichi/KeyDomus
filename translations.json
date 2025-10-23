@@ -23,8 +23,8 @@
       "cancel": "Cancel",
       "delete": "Delete"
     },
-    "building": {
-      "title": "Building",
+    "buildings": {
+      "title": "Buildings",
       "find_building": "Find Building ...",
       "find_address": "Address ...",
       "list_building": "List Buildings:",
@@ -32,6 +32,26 @@
       "parent_building": "Parent Building:",
       "address": "Address"
     },
-    "search": "Search"
+    "doors": {
+		"title": "Doors"
+	},
+	"sistems": {
+		"title": "Sistems"
+	},
+	"keys": {
+		"title": "Keys"
+	},
+	"employees": {
+		"title": "Employees"
+	},
+	"actions": {
+		"title": "Actions"
+	},
+	"deadlines": { 
+		"title": "Deadlines"
+	},
+	"journal" : {
+		"title": "Journal"
+	}
   }
 }

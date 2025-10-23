@@ -80,16 +80,16 @@ class BuildingForm(QWidget):
 
         # 🧾 Form campi (sotto)
         self.name_input = QLineEdit()
-        self.name_input.setPlaceholderText(t("building.name_building"))
+        self.name_input.setPlaceholderText(t("buildings.name_building"))
         layout.addWidget(self.name_input)
        
-        layout.addWidget(QLabel(t("building.parent_building")))
+        layout.addWidget(QLabel(t("buildings.parent_building")))
         self.parent_input = QComboBox()
         self.parent_input.addItem(t("commons.all"))
         layout.addWidget(self.parent_input)
         
         self.address_input = QLineEdit()
-        self.address_input.setPlaceholderText(t("building.address"))
+        self.address_input.setPlaceholderText(t("buildings.address"))
         layout.addWidget(self.address_input)
         
         self.notes_input = QTextEdit()
@@ -171,7 +171,7 @@ class BuildingForm(QWidget):
             self.update_form_state()
             self.update_buttons()
 
-class BuildingTab(QWidget):
+class BuildingsTab(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
@@ -183,17 +183,17 @@ class BuildingTab(QWidget):
         left_panel = QVBoxLayout()
         
         left_panel.addWidget(QLabel(t("commons.filters")))
-        self.search_input = QLineEdit(t("building.find_building"))
+        self.search_input = QLineEdit(t("buildings.find_building"))
         left_panel.addWidget(self.search_input)
         
         self.parent_filter = QComboBox()
         self.parent_filter.addItem(t("commons.all"))
         left_panel.addWidget(self.parent_filter)
         
-        self.address_filter = QLineEdit(t("building.find_address"))
+        self.address_filter = QLineEdit(t("buildings.find_address"))
         left_panel.addWidget(self.address_filter)
         
-        left_panel.addWidget(QLabel(t("building.list_building")))
+        left_panel.addWidget(QLabel(t("buildings.list_building")))
         self.building_list = QListWidget()
         self.building_list.itemClicked.connect(self.on_item_selected)
 
@@ -340,7 +340,7 @@ class DoorForm(QWidget):
             self.update_form_state()
             self.update_buttons()
 
-class DoorTab(QWidget):
+class DoorsTab(QWidget):
     def __init__(self):
         super().__init__()
         layout = QVBoxLayout()
@@ -386,6 +386,58 @@ class DoorTab(QWidget):
     def on_item_selected(self, item: QListWidgetItem):
         self.form.load_item(item)
 
+class SistemsTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+
+class KeysTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+        
+class EmployeesTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+        
+class ActionsTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+
+class DeadlinesTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+
+class JournalTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        layout = QVBoxLayout()
+        self.setLayout(layout)
+
+        top_layout = QHBoxLayout()
+
+
+
+
+
 class MainWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -394,8 +446,15 @@ class MainWindow(QWidget):
         self.setLayout(layout)
 
         tabs = QTabWidget()
-        tabs.addTab(BuildingTab(), i18n.t("building.title"))
-        tabs.addTab(DoorTab(), "Porte")
+        tabs.addTab(BuildingsTab(), t("buildings.title"))
+        tabs.addTab(DoorsTab(), t("doors.title") )
+        tabs.addTab(SistemsTab(), t("sistems.title"))
+        tabs.addTab(KeysTab(), t("keys.title"))
+        tabs.addTab(EmployeesTab(), t("employees.title"))
+        tabs.addTab(ActionsTab(), t("actions.title"))
+        tabs.addTab(DeadlinesTab(), t("deadlines.title"))
+        tabs.addTab(JournalTab(), t("journal.title"))
+        
 
         layout.addWidget(tabs)
 
